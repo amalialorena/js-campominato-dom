@@ -56,25 +56,34 @@
                     let squareElement = document.createElement("div");
                     squareElement.className = "square";
                     rowElement.append(squareElement);
+                    let hasBomb = false;
+                    //ciclo dell'array/bombe
+                    for(let x = 0; x < counter; x++) {
+                        // console.log({ bomb: bombs[x], value: squareElement.innerHTML });
+                        if(bombs[x] == counter){
+                            console.log("trovato")
+                            hasBomb = true;
+                        }
+                    } 
+                        
         
                     squareElement.addEventListener("click",
                         function(){
-                            squareElement.classList.add("active");    
-                            //ciclo dell'array/bombe
+                            squareElement.classList.add("selected");    
+                            
                             //condizioni : se il numero della casella cliccata è presente nell'array bombe :
                             //la partita termina
                                  //faccio vedere tutte le bombe
                                  //faccio vedere il punteggio -> numero di click
                                  //disabilito il click
 
+                                 if (hasBomb) {
+                                    squareElement.classList.add("bomb"); 
 
-                            for(let x = 0; x < bombs.length; x++) {
-                                console.log({ bomb: bombs[x], value: squareElement.innerHTML });
-                                if(bombs[x] == squareElement.innerHTML){
-                                    console.log("trovato")
-                                }
-                            } 
-                                     
+
+                                 }
+
+      
                         }
                     )
                     

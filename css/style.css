@@ -26,6 +26,10 @@
     justify-content: center;
 }
 
-.active {
+.selected {
     background-color:white;
+}
+
+.bomb {
+    background-color:red;
 }

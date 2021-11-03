@@ -28,25 +28,53 @@
 // Al termine della partita il software deve scoprire tutte le bombe e comunicare il punteggio, cioè il numero di volte che l’utente ha cliccato un quadratino con un numero consentito. (quindi se ci pensate dovrete tenere traccia del punteggio).
 
 
+            function showAllBombs () {
+
+                const squares = document.querySelectorAll('.square');
+                console.log('aaa 2', { squares, bombs } );
+                for (let i = 0; i < squares.length; i++) {
+                    for (let y = 0; y < bombs.length; y++) {
+                        console.log('aaaa 3', { i, actual: bombs[y] })
+                        if (i === bombs[y]) {
+                            console.log('found bomb', { i, bomb: bombs[y] });
+                            squares[i].classList.add("bomb"); 
+                        }
+
+                    }
+                }
+            }
+
         var gridContainer = document.getElementById("grid-container");
 
         var difficulty = parseInt(prompt("Scegli il livello di difficoltà: 1, 2 o 3"));
+        let gameOver = false;
+        let bombs = [];
+
+        function createBombs (row, square) {
+            while (bombs.length < 16) {
+                let num = Math.floor(Math.random() * (row * square));
+                let found = false;
+    
+                for(let i = 0; i < num; i++) {
+                    if(num === bombs[i]){
+                        found = true;
+                    }
+                }
+                if(found === false) {
+                    bombs.push(num);
+                }
+            }
+        }
+        
+
         
         function gridGenerator(row, square) {
             let counter = 1;
             //genero un array di 16 numeri univoci casuali
-                //il range di numeri generati dipende dal livello di difficoltà scelto -> funzione
+                //il range di numeri generati dipende dal livello di difficoltà scelto 
+            createBombs(row, square);
 
-
-            
-            const bombs = [1, 2, 3];
-            // let number = false;
-
-            // for(let i = 0; i < 3; i++) {
-            //     Math.floor(Math.random() * 5);
-
-            // }
-
+            console.log(bombs)
             for(let i = 0; i < row; i++) {
                 let rowElement = document.createElement("div");
                 rowElement.className = "row";
@@ -58,37 +86,52 @@
                     rowElement.append(squareElement);
                     let hasBomb = false;
                     //ciclo dell'array/bombe
+
                     for(let x = 0; x < counter; x++) {
-                        // console.log({ bomb: bombs[x], value: squareElement.innerHTML });
                         if(bombs[x] == counter){
                             console.log("trovato")
                             hasBomb = true;
                         }
                     } 
-                        
-        
+
+                    
                     squareElement.addEventListener("click",
                         function(){
-                            squareElement.classList.add("selected");    
-                            
+                              
                             //condizioni : se il numero della casella cliccata è presente nell'array bombe :
                             //la partita termina
                                  //faccio vedere tutte le bombe
                                  //faccio vedere il punteggio -> numero di click
                                  //disabilito il click
 
+                                 if (gameOver) return;
+
                                  if (hasBomb) {
                                     squareElement.classList.add("bomb"); 
-
-
-                                 }
-
-      
+                                    gameOver = true;
+                                    showAllBombs();    
+                                 } else {
+                                    squareElement.classList.add("selected");  
+                                 }     
                         }
                     )
-                    
+                        
+
+                     if(gameOver) {
+                         console.log('aaa 1');
+                        // for(let y = 0; y < counter; y++) {
+                        //     console.log('aaaaa', { counter, y, squareElement, bombs, actualBomb: bombs[y] });
+                        //     if(bombs[y] == counter ){
+                        //         console.log("gameover")
+                        //         squareElement.classList.add("bombs")
+                        //     }
+                        // } 
+                     }
+                     
+                     
+
                     squareElement.append(counter);
-                    counter++;
+                    counter++; 
                 }   
             }
         }

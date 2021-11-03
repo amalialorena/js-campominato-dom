@@ -31,15 +31,12 @@
             function showAllBombs () {
 
                 const squares = document.querySelectorAll('.square');
-                console.log('aaa 2', { squares, bombs } );
+              
                 for (let i = 0; i < squares.length; i++) {
                     for (let y = 0; y < bombs.length; y++) {
-                        console.log('aaaa 3', { i, actual: bombs[y] })
                         if (i === bombs[y]) {
-                            console.log('found bomb', { i, bomb: bombs[y] });
                             squares[i].classList.add("bomb"); 
                         }
-
                     }
                 }
             }

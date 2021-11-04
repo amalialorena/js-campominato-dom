@@ -26,117 +26,108 @@
 // La partita termina quando il giocatore clicca su una bomba
 // o raggiunge il numero massimo possibile di numeri consentiti.
 // Al termine della partita il software deve scoprire tutte le bombe e comunicare il punteggio, cioè il numero di volte che l’utente ha cliccato un quadratino con un numero consentito. (quindi se ci pensate dovrete tenere traccia del punteggio).
+ //genero un array di 16 numeri univoci casuali
+    //il range di numeri generati dipende dal livello di difficoltà scelto 
+ //condizioni : se il numero della casella cliccata è presente nell'array bombe :
+    //la partita termina
+        //faccio vedere tutte le bombe
+        //faccio vedere il punteggio -> numero di click
+        //disabilito il click
 
+          
 
-            function showAllBombs () {
+var gridContainer = document.getElementById("grid-container");
+var difficulty = parseInt(prompt("Scegli il livello di difficoltà: 1, 2 o 3"));
+let gameOver = false;
+let bombs = [];
+let clickCounter = 0;
+let resultsContainer = document.getElementById("game-results");
+let results = document.createElement("div");
+resultsContainer.append(results);
 
-                const squares = document.querySelectorAll('.square');
-              
-                for (let i = 0; i < squares.length; i++) {
-                    for (let y = 0; y < bombs.length; y++) {
-                        if (i === bombs[y]) {
-                            squares[i].classList.add("bomb"); 
-                        }
-                    }
-                }
-            }
-
-        var gridContainer = document.getElementById("grid-container");
-
-        var difficulty = parseInt(prompt("Scegli il livello di difficoltà: 1, 2 o 3"));
-        let gameOver = false;
-        let bombs = [];
-
-        function createBombs (row, square) {
-            while (bombs.length < 16) {
-                let num = Math.floor(Math.random() * (row * square));
-                let found = false;
+function gridGenerator(row, square) {
+    let counter = 1;
+    createBombs(row, square);
     
-                for(let i = 0; i < num; i++) {
-                    if(num === bombs[i]){
-                        found = true;
-                    }
+    console.log(bombs)
+    for(let i = 0; i < row; i++) {
+        let rowElement = document.createElement("div");
+        rowElement.className = "row";
+        gridContainer.appendChild(rowElement);
+
+        for (let j = 0; j < square; j++) {
+            let squareElement = document.createElement("div");
+            squareElement.className = "square";
+            rowElement.append(squareElement);
+            let hasBomb = false;
+
+            //ciclo dell'array/bombe
+
+            for(let x = 0; x < bombs.length; x++) {
+                if(bombs[x] == counter){
+                    console.log("trovato", { bomb: bombs[x], counter });
+                    hasBomb = true;
                 }
-                if(found === false) {
-                    bombs.push(num);
-                }
+            } 
+            
+            //il click
+
+            squareElement.addEventListener("click", function () {
+                if (gameOver) return;
+
+                if (hasBomb) {
+                    squareElement.classList.add("bomb"); 
+                    gameOver = true;
+                    showAllBombs(); 
+                    results.innerHTML =` Hai perso, il tuo punteggio è: ${clickCounter}`;   
+                } else {
+                    squareElement.classList.add("selected");  
+                    clickCounter++;
+                    console.log(clickCounter);
+                }     
+            })
+            
+            squareElement.append(counter);
+            counter++; 
+        }   
+    }
+}
+
+if (difficulty === 1) {
+    gridGenerator(10, 10);
+}else if (difficulty === 2) {
+    gridGenerator(9, 9);
+} else if (difficulty === 3) {
+    gridGenerator(7, 7)
+}
+
+//funzioni
+
+function showAllBombs () {
+    const squares = document.querySelectorAll('.square');
+    
+    for (let i = 0; i < squares.length; i++) {
+        for (let y = 0; y < bombs.length; y++) {
+            if (i + 1 === bombs[y]) {
+                squares[i].classList.add("bomb"); 
             }
         }
-        
+    }
+}
 
-        
-        function gridGenerator(row, square) {
-            let counter = 1;
-            //genero un array di 16 numeri univoci casuali
-                //il range di numeri generati dipende dal livello di difficoltà scelto 
-            createBombs(row, square);
+function createBombs (row, square) {
+    while (bombs.length < 16) {
+        let num = Math.floor(Math.random() * (row * square)) + 1;
+        let found = false;
 
-            console.log(bombs)
-            for(let i = 0; i < row; i++) {
-                let rowElement = document.createElement("div");
-                rowElement.className = "row";
-                gridContainer.appendChild(rowElement);
-        
-                for (let j = 0; j < square; j++) {
-                    let squareElement = document.createElement("div");
-                    squareElement.className = "square";
-                    rowElement.append(squareElement);
-                    let hasBomb = false;
-                    //ciclo dell'array/bombe
-
-                    for(let x = 0; x < counter; x++) {
-                        if(bombs[x] == counter){
-                            console.log("trovato")
-                            hasBomb = true;
-                        }
-                    } 
-
-                    
-                    squareElement.addEventListener("click",
-                        function(){
-                              
-                            //condizioni : se il numero della casella cliccata è presente nell'array bombe :
-                            //la partita termina
-                                 //faccio vedere tutte le bombe
-                                 //faccio vedere il punteggio -> numero di click
-                                 //disabilito il click
-
-                                 if (gameOver) return;
-
-                                 if (hasBomb) {
-                                    squareElement.classList.add("bomb"); 
-                                    gameOver = true;
-                                    showAllBombs();    
-                                 } else {
-                                    squareElement.classList.add("selected");  
-                                 }     
-                        }
-                    )
-                        
-
-                     if(gameOver) {
-                         console.log('aaa 1');
-                        // for(let y = 0; y < counter; y++) {
-                        //     console.log('aaaaa', { counter, y, squareElement, bombs, actualBomb: bombs[y] });
-                        //     if(bombs[y] == counter ){
-                        //         console.log("gameover")
-                        //         squareElement.classList.add("bombs")
-                        //     }
-                        // } 
-                     }
-                     
-                     
-
-                    squareElement.append(counter);
-                    counter++; 
-                }   
+        for(let i = 0; i < bombs.length; i++) {
+            if(num === bombs[i]){
+                found = true;
             }
         }
-        
-        if (difficulty === 1) {
-            gridGenerator(10, 10);
-        }else if (difficulty === 2) {
-            gridGenerator(9, 9);
-        } else if (difficulty === 3) {
-            gridGenerator(7, 7)
+
+        if(found === false) {
+            bombs.push(num);
         }
+    }
+}

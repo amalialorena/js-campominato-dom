@@ -37,6 +37,7 @@
           
 
 var gridContainer = document.getElementById("grid-container");
+let body = document.querySelector("body");
 var difficulty = parseInt(prompt("Scegli il livello di difficoltà: 1, 2 o 3"));
 let gameOver = false;
 let bombs = [];
@@ -46,15 +47,16 @@ let clickCounter = 0;
 let resultsContainer = document.getElementById("game-results");
 let results = document.createElement("div");
 resultsContainer.append(results);
-    //titolo
-let title = document.createElement("h1");
-let body = document.querySelector("body");
-body.prepend(title);
-title.innerHTML = "Campo minato";
-    //sottotitolo
+//sottotitolo  
 let subtitle = document.createElement("h3");
 subtitle.innerHTML = "Clicca sulle caselle per giocare, se trovi una bomba, hai perso"  
-body.append(subtitle);  
+body.prepend(subtitle);  
+//titolo
+let title = document.createElement("h1");
+body.prepend(title);
+title.innerHTML = "Campo minato";
+    
+
 
 function gridGenerator(row, square) {
     let counter = 1;

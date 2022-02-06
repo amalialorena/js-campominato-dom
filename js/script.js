@@ -38,7 +38,7 @@
 
 var gridContainer = document.getElementById("grid-container");
 let body = document.querySelector("body");
-var difficulty = parseInt(prompt("Scegli il livello di difficoltà: 1, 2 o 3"));
+var difficulty = parseInt(prompt("Campo minato. Scegli il livello di difficoltà: 1, 2 o 3"));
 let gameOver = false;
 let bombs = [];
 let clickCounter = 0;

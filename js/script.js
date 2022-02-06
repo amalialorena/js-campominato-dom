@@ -89,10 +89,10 @@ function gridGenerator(row, square) {
                 if (gameOver) return;
 
                 if (hasBomb) {
-                    squareElement.classList.add("bomb"); 
+                    this.classList.add("bomb"); 
                     gameOver = true;
                     showAllBombs(); 
-                    results.innerHTML =` Hai perso, il tuo punteggio è: ${clickCounter}`;   
+                    results.innerHTML =` Hai trovato una bomba, il tuo punteggio è: ${clickCounter}`;   
                 } else {
                     squareElement.classList.add("selected");  
                     clickCounter++;
@@ -112,6 +112,8 @@ if (difficulty === 1) {
     gridGenerator(9, 9);
 } else if (difficulty === 3) {
     gridGenerator(7, 7)
+} else {
+    gridGenerator(10, 10)
 }
 
 //funzioni
